@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
+#include <time.h>
 // Random matrix generation function
 double* matGenerate(){
-    //printf("Generating random matrix\n");
     double* A = (double*) malloc(N * N * sizeof(double));
     if(A == NULL){
         printf("Memory allocation failed\n");
@@ -18,7 +18,6 @@ double* matGenerate(){
 
 // Random symmetric matrix generation function
 double* matGenerateSym(){
-    //printf("Generating random symmetric matrix\n");
     double* A = (double*) malloc(N * N * sizeof(double));
     if(A == NULL){
         printf("Memory allocation failed\n");
@@ -80,40 +79,41 @@ int isTransposed(double* A, double* B){
 }
 
 // Sequential test function
-void seqTest(int argc, char** argv){
-    int size, rank;
-    MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    if (rank == 0){
-        double* A = matGenerate();
-        printf("Sequential test\n");
-        for (int i = 0; i < 10; i++){
-            double start, end;
-            start = MPI_Wtime();
-            if (checkSymSeq(A)){
-                end = MPI_Wtime();
-                printf("Check symmetric time: %f\n", end - start);
-                printf("Matrix is symmetric\n");
-                matRandomize(A);
-                continue;
-            } else {
-                printf("Matrix is not symmetric\n");
-            }
-            double* T = matTranspose(A);
-            end = MPI_Wtime();
-            printf("Sequential transpose time: %f\n", end - start);
-            if(isTransposed(A, T)){
-                printf("Matrix transposed correctly\n");
-            } else {
-                printf("Matrix transposed incorrectly\n");
-            }
-            matRandomize(A);
-            free(T);
-        }
-        free(A);
+void seqTest_transpose(int numRuns){
+    double* A = matGenerate();
+    double avgTime = 0;
+    struct timespec start, end;
+    for (int i = 0; i < numRuns; i++){
+        clock_gettime(CLOCK_REALTIME, &start);
+        double* T = matTranspose(A);
+        clock_gettime(CLOCK_REALTIME, &end);
+        double elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+        avgTime += elapsed;
+        matRandomize(A);
+        free(T);
     }
+    avgTime /= numRuns;
+    printf("Seq, transpose, %d, %d, %.9f\n", N, 1, avgTime);
+    free(A);
+}
 
-    MPI_Finalize();
+// Sequential test function for the symmetric matrix
+void seqTest_checkSym(int numRuns){
+    double* A;
+    double avgTime = 0;
+    struct timespec start, end;
+    for (int i = 0; i < 10; i++){
+        A = matGenerateSym();
+        clock_gettime(CLOCK_REALTIME, &start);
+        if (!checkSymSeq(A)){
+            fprintf(stderr, "Error: Matrix is not symmetric\n");
+            exit(1);
+        }
+        clock_gettime(CLOCK_REALTIME, &end);
+        double elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+        avgTime += elapsed;
+    }
+    avgTime /= numRuns;
+    printf("Seq, checkSym, %d, %d, %.9f\n", N, 1, avgTime);
+    free(A);
 }
