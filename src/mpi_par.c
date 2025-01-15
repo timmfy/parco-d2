@@ -3,7 +3,6 @@
 #include <string.h>
 #include <mpi.h>
 #include <seq.h>
-
 int cheskSymMPI(int rank, int size, double* time, double* A) {
     double start, end;
     int local_symm, symm;
@@ -200,7 +199,7 @@ void MPItest_transpose(int rank, int size, int numRuns, int algorithm) {
         else if (algorithm == 1) {
             T = matTransposeMPI_block_point2point(rank, size, &time, A, N / size);
         }
-        else if (algorithm == 2) {
+        else {
             T = matTransposeMPI_block_all2all(rank, &time, A, N / size);
         }
 
@@ -214,7 +213,15 @@ void MPItest_transpose(int rank, int size, int numRuns, int algorithm) {
         free(T);
     }
     if(rank == 0){
-        printf("MPI, transpose, %d, %d, %.9f\n", N, size, total_time / numRuns);
+        if (algorithm == 0) {
+            printf("MPI simple,transpose,%d,%d,%.9f\n", N, size, total_time / numRuns);
+        }
+        else if (algorithm == 1) {
+            printf("MPI block point2point,transpose,%d,%d,%.9f\n", N, size, total_time / numRuns);
+        }
+        else {
+            printf("MPI block all2all,transpose,%d,%d,%.9f\n", N, size, total_time / numRuns);
+        }
     }
     free(A);
 }
@@ -237,7 +244,7 @@ void MPItest_checkSym(int rank, int size, int numRuns) {
         }
     }
     if(rank == 0){
-        printf("MPI, checkSym, %d, %d, %.9f\n", N, size, total_time / numRuns);
+        printf("MPI, checkSym,%d,%d,%.9f\n", N, size, total_time / numRuns);
         free(A);
     }
 }

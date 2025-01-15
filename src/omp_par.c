@@ -35,7 +35,7 @@ void OMPtest_transpose(int numRuns, int blockSize, int numThreads) {
         avgTime += time;
     }
     avgTime /= numRuns;
-    printf("OMP, transpose, %d, %d, %f\n", N, numThreads, avgTime);
+    printf("OMP,transpose,%d,%d,%f\n", N, numThreads, avgTime);
     free(M);
     free(T);
 }

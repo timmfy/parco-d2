@@ -93,7 +93,7 @@ void seqTest_transpose(int numRuns){
         free(T);
     }
     avgTime /= numRuns;
-    printf("Seq, transpose, %d, %d, %.9f\n", N, 1, avgTime);
+    printf("SEQ,transpose,%d,%d,%.9f\n", N, 1, avgTime);
     free(A);
 }
 
@@ -114,6 +114,6 @@ void seqTest_checkSym(int numRuns){
         avgTime += elapsed;
     }
     avgTime /= numRuns;
-    printf("Seq, checkSym, %d, %d, %.9f\n", N, 1, avgTime);
+    printf("SEQ,checkSym,%d,%d,%.9f\n", N, 1, avgTime);
     free(A);
 }
