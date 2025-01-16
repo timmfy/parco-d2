@@ -22,7 +22,7 @@ def parse_csv(file_path):
     df = pd.read_csv(file_path)
     return df
 
-def plot_strong_scaling(df, implementation, matrix_size):
+def plot_strong_scaling(df, implementation, matrix_size, function='transpose'):
     """
     Plots strong scaling (S_s), weak scaling (S_w), and efficiency (Eff)
     for a specified implementation and matrix size.
@@ -30,7 +30,7 @@ def plot_strong_scaling(df, implementation, matrix_size):
     # Filter data for the specified implementation and matrix size
     data = df[(df['Implementation'] == implementation) &
               (df['Size'] == matrix_size) &
-              (df['Function'] == 'transpose')]
+              (df['Function'] == function)]
 
     baseline_data = df[(df['Implementation'] == 'SEQ')]
     # Baseline execution time with 1 process
@@ -107,12 +107,12 @@ def plot_execution_time_fixed_size(df, matrix_size, implementations=['OMP', 'MPI
     ax.set_xlabel('Processes')
     ax.set_ylabel('Average Execution Time (s)')
     ax.set_title(f'Execution Time vs Number of Processes (Matrix Size={matrix_size})')
-    ax.legend()
+    ax.legend(framealpha=1)
     
     plt.savefig(f'figures/execution_time_fixed_size_{matrix_size}.png')
     plt.close()
 
-def plot_execution_time_variable_size(df, processes_list, implementation, min_size, max_size):
+def plot_execution_time_variable_size(df, processes_list, implementation, min_size, max_size, function='transpose'):
     """
     Plots execution time for variable matrix sizes on the X axis, having lines for
     different numbers of processes of one implementation plus the sequential baseline.
@@ -124,14 +124,15 @@ def plot_execution_time_variable_size(df, processes_list, implementation, min_si
     for num_procs in processes_list:
         data = df[(df['Implementation'] == implementation) &
                   (df['Processes'] == num_procs) &
-                  (df['Function'] == 'transpose') &
+                  (df['Function'] == function) &
                   (df['Size'].isin(matrix_sizes))]
 
         ax.plot(data['Size'], data['AvgTime'], label=f'{num_procs} Processes')
     # Plot sequential baseline
     seq_data = df[(df['Implementation'] == 'SEQ') &
-                  (df['Function'] == 'transpose') &
+                  (df['Function'] == function) &
                   (df['Size'].isin(matrix_sizes))]
+    
 
     ax.plot(seq_data['Size'], seq_data['AvgTime'], label='SEQ Baseline', linestyle='dashed', color='gray')
 
@@ -149,8 +150,8 @@ def plot_execution_time_variable_size(df, processes_list, implementation, min_si
 
     ax.set_ylabel('Average Execution Time (s)')
     ax.set_title(f'Execution Time vs Matrix Size ({implementation} Implementation)')
-    ax.legend()
-    plt.savefig(f'figures/execution_time_variable_size_{implementation}.png')
+    ax.legend(framealpha=1)
+    plt.savefig(f'figures/execution_time_variable_size_{implementation}_{function}.png')
 
 def plot_execution_time_comparison_mpi(df, matrix_size, mpi_implementations):
     """
@@ -174,10 +175,10 @@ def plot_execution_time_comparison_mpi(df, matrix_size, mpi_implementations):
     ax.set_xlabel('Processes')
     ax.set_ylabel('Average Execution Time (s)')
     ax.set_title(f'Execution Time Comparison of MPI Implementations, Matrix Size={matrix_size}')
-    ax.legend()
+    ax.legend(framealpha=1)
     plt.savefig(f'figures/execution_time_comparison_mpi_{matrix_size}.png')
 
-def plot_weak_scaling(df, implementation, base_matrix_size):
+def plot_weak_scaling(df, implementation, base_matrix_size, function='transpose'):
     """
     Plots weak scaling for a specified implementation and base matrix size.
     Weak scaling compares performance as both problem size and processors scale.
@@ -189,13 +190,14 @@ def plot_weak_scaling(df, implementation, base_matrix_size):
     """
     # Filter data for the specified implementation and transpose function
     data = df[(df['Implementation'] == implementation) &
-              (df['Function'] == 'transpose')]
+              (df['Function'] == function)]
     
     # Get baseline sequential time for base size
     baseline_data = df[(df['Implementation'] == 'SEQ') & 
-                      (df['Size'] == base_matrix_size)]
+                      (df['Size'] == base_matrix_size) &
+                        (df['Function'] == function)]
     baseline_time = baseline_data['AvgTime'].values[0]
-    
+
     # Calculate weak scaling efficiency
     weak_scaling = []
     processes = []
@@ -238,10 +240,10 @@ def plot_weak_scaling(df, implementation, base_matrix_size):
     plt.xlabel('Number of Processes (Size, Processes)')
     plt.ylabel('Weak Scaling Efficiency')
     plt.title(f'Weak Scaling - {implementation} (Base Matrix Size: {base_matrix_size})')
-    plt.legend()
+    plt.legend(framealpha=1)
     
     # Save plot
-    plt.savefig(f'figures/weak_scaling_{implementation}_{base_matrix_size}.png')
+    plt.savefig(f'figures/weak_scaling_{implementation}_{base_matrix_size}_{function}.png')
     plt.close()
 
 
@@ -249,22 +251,26 @@ def plot_weak_scaling(df, implementation, base_matrix_size):
 
 
 def main():
-    # Example usage:
+    # File with the results
     file_path = 'results.csv'
     df = parse_csv(file_path)
-    # Plot strong scaling and efficiency for MPI implementation and matrix size 1024
-    plot_strong_scaling(df, implementation='MPI simple', matrix_size=1024)
 
-    # Plot execution time for fixed matrix size 1024 across all implementations
-    plot_execution_time_fixed_size(df, matrix_size=1024)
+    #Function to use for plots ('checkSym' or 'transpose')
+    function = 'transpose'
 
-    # Plot execution time for variable matrix sizes with different numbers of processes for MPI simple
-    processes_list = [4, 8, 16, 32]
-    implementations = ['MPI simple']
-    plot_execution_time_variable_size(df, processes_list=processes_list, implementation='MPI simple', min_size=512, max_size=4096)
+    #Strong scaling
+    plot_strong_scaling(df, implementation='MPI block point2point', matrix_size=2048, function=function)
 
-    # Plot weak scaling for MPI implementation and base matrix size 1024
-    plot_weak_scaling(df, implementation='MPI simple', base_matrix_size=128)
+    #Execution time for different amount of processes
+    implementations = ['OMP', 'MPI block point2point', 'MPI simple']
+    plot_execution_time_fixed_size(df, matrix_size=2048, implementations=implementations)
+
+    #Execution time for different matrix sizes
+    processes_list = [8, 16, 32]
+    plot_execution_time_variable_size(df, processes_list=processes_list, implementation='MPI block point2point', min_size=512, max_size=4096, function=function)
+
+    #Weak scaling
+    plot_weak_scaling(df, implementation='MPI block point2point', base_matrix_size=128, function=function)
 
 if __name__ == "__main__":
     main()

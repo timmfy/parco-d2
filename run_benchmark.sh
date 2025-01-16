@@ -102,15 +102,20 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-filename="results_${implementation}.csv"
-#change the filename if the MPI implementation is used
-if [[ $implementation == "MPI" ]]; then
+filename=""
+if [[ $checkSym -eq 1 ]]; then
+    filename="results_${implementation}_checkSym.csv"
+else
+    filename="results_${implementation}_transpose.csv"
+fi
+#change the filename if the MPI implementation for transpose is selected
+if [[ $implementation == "MPI" ]] && [[ $checkSym -eq 0 ]]; then
     if [[ $algorithm_version -eq 0 ]]; then
-        filename="results_${implementation}_simple.csv"
+        filename="results_${implementation}_simple_transpose.csv"
     elif [[ $algorithm_version -eq 1 ]]; then
-        filename="results_${implementation}_block_point2point.csv"
+        filename="results_${implementation}_block_point2point_transpose.csv"
     elif [[ $algorithm_version -eq 2 ]]; then
-        filename="results_${implementation}_block_all2all.csv"
+        filename="results_${implementation}_block_all2all_transpose.csv"
     fi
 fi
 echo "Implementation,Function,Size,Processes,AvgTime" > $filename

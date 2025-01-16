@@ -255,7 +255,7 @@ void MPItest_checkSym(int rank, int size, int numRuns) {
         }
     }
     if(rank == 0){
-        printf("MPI, checkSym,%d,%d,%.9f\n", N, size, total_time / numRuns);
+        printf("MPI,checkSym,%d,%d,%.9f\n", N, size, total_time / numRuns);
         free(A);
     }
 }

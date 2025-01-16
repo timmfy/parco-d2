@@ -50,7 +50,9 @@ int main(int argc, char** argv) {
         if (checkSym == 1) {
             seqTest_checkSym(numRuns);
         }
-        seqTest_transpose(numRuns);
+        else {
+            seqTest_transpose(numRuns);
+        }
     }
     else if (strcmp(implementation, "OMP") == 0) {
         OMPtest_transpose(numRuns, min(32, N), omp_get_max_threads());
