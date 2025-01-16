@@ -67,9 +67,9 @@ def plot_strong_scaling(df, implementation, matrix_size):
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax1.legend(lines + lines2, labels + labels2, loc='best')
 
-    plt.savefig('figures/strong_scaling.png')
+    plt.savefig(f'figures/strong_scaling_{implementation}_{matrix_size}.png')
 
-def plot_execution_time_fixed_size(df, matrix_size, implementations=['OMP', 'MPI simple', 'MPI block all2all', 'MPI block point2point'], processes_list=[2, 4, 8, 16, 32]):
+def plot_execution_time_fixed_size(df, matrix_size, implementations=['OMP', 'MPI simple', 'MPI block all2all', 'MPI block point2point'], processes_list=[2,4,8,16,32,64]):
     """
     Plots execution time for a fixed matrix size across all implementations
     with the number of processes on the X axis, including the sequential baseline.
@@ -101,14 +101,15 @@ def plot_execution_time_fixed_size(df, matrix_size, implementations=['OMP', 'MPI
     ax.set_xscale('log')
     ax.set_xticks([2**i for i in range(1, int(np.log2(max(proc_list))) + 1)])
     ax.tick_params(axis='x', which='minor', bottom=False)
+    ax.get_xaxis().set_major_formatter(plt.ScalarFormatter(useMathText=True))
+    ax.get_xaxis().set_minor_formatter(plt.NullFormatter())
     ax.set_xlim([min(proc_list), max(proc_list)])
-    ax.get_xaxis().set_major_formatter(plt.ScalarFormatter())
     ax.set_xlabel('Processes')
     ax.set_ylabel('Average Execution Time (s)')
     ax.set_title(f'Execution Time vs Number of Processes (Matrix Size={matrix_size})')
     ax.legend()
     
-    plt.savefig('figures/execution_time_fixed_size.png')
+    plt.savefig(f'figures/execution_time_fixed_size_{matrix_size}.png')
     plt.close()
 
 def plot_execution_time_variable_size(df, processes_list, implementation, min_size, max_size):
@@ -149,9 +150,9 @@ def plot_execution_time_variable_size(df, processes_list, implementation, min_si
     ax.set_ylabel('Average Execution Time (s)')
     ax.set_title(f'Execution Time vs Matrix Size ({implementation} Implementation)')
     ax.legend()
-    plt.savefig('figures/execution_time.png')
+    plt.savefig(f'figures/execution_time_variable_size_{implementation}.png')
 
-def plot_execution_time_comparison(df, matrix_size, mpi_implementations):
+def plot_execution_time_comparison_mpi(df, matrix_size, mpi_implementations):
     """
     Plots execution time for the same matrix size, comparing two MPI implementations with 
     different algorithms. X axis has the number of processes.
@@ -174,7 +175,7 @@ def plot_execution_time_comparison(df, matrix_size, mpi_implementations):
     ax.set_ylabel('Average Execution Time (s)')
     ax.set_title(f'Execution Time Comparison of MPI Implementations, Matrix Size={matrix_size}')
     ax.legend()
-    plt.savefig('figures/mpi_comparison.png')
+    plt.savefig(f'figures/execution_time_comparison_mpi_{matrix_size}.png')
 
 def plot_weak_scaling(df, implementation, base_matrix_size):
     """
@@ -196,30 +197,56 @@ def plot_weak_scaling(df, implementation, base_matrix_size):
     baseline_time = baseline_data['AvgTime'].values[0]
     
     # Calculate weak scaling efficiency
-    # For each process count P, size = base_size * sqrt(P)
-    process_counts = data['Processes'].unique()
     weak_scaling = []
+    processes = []
     sizes = []
-    
-    for p in process_counts:
-        size = int(base_matrix_size * np.sqrt(p))
+    size = base_matrix_size * 2
+    p = 2
+
+    while p <= data['Processes'].max():
         case = data[(data['Processes'] == p) & (data['Size'] == size)]
         if not case.empty:
             weak_scaling.append(baseline_time / case['AvgTime'].values[0])
             sizes.append(size)
+            processes.append(p)
+        size *= 2
+        p *= 2
     
     # Create the plot
     plt.figure(figsize=(10, 6))
-    plt.plot(process_counts[:len(weak_scaling)], weak_scaling, 'o-', label=implementation)
-    plt.xlabel('Number of Processes')
+    plt.xscale('log')
+    
+    # Sort processes and sizes for consistency
+    sizes.sort()
+    processes.sort()
+
+    # Generate pairs of (size, processes) for x-tick labels
+    pairs = list(zip(processes, sizes))
+    plt.xticks(processes, [f'({s}, {p})' for s, p in pairs])
+    
+    # Plot weak scaling efficiency against the number of processes
+    plt.plot(processes, weak_scaling, label=implementation)
+    # Plot the baseline efficiency line at 1 for base_matrix_size and 1 process
+    plt.hlines(1, processes[0], processes[-1], colors='gray', linestyles='dashed', label=f'SEQ Baseline ({base_matrix_size}x{base_matrix_size})')
+    # Remove minor ticks
+    ax = plt.gca()
+    ax.xaxis.set_minor_locator(plt.NullLocator())
+    ax.xaxis.set_minor_formatter(plt.NullFormatter())
+
+    plt.xlim([processes[0], processes[-1]])
+
+    plt.xlabel('Number of Processes (Size, Processes)')
     plt.ylabel('Weak Scaling Efficiency')
-    plt.title(f'Weak Scaling - Base Matrix Size: {base_matrix_size}')
-    plt.grid(True)
+    plt.title(f'Weak Scaling - {implementation} (Base Matrix Size: {base_matrix_size})')
     plt.legend()
     
     # Save plot
     plt.savefig(f'figures/weak_scaling_{implementation}_{base_matrix_size}.png')
     plt.close()
+
+
+
+
 
 def main():
     # Example usage:
@@ -233,14 +260,11 @@ def main():
 
     # Plot execution time for variable matrix sizes with different numbers of processes for MPI simple
     processes_list = [4, 8, 16, 32]
+    implementations = ['MPI simple']
     plot_execution_time_variable_size(df, processes_list=processes_list, implementation='MPI simple', min_size=512, max_size=4096)
 
-    # Compare two MPI implementations with different algorithms for matrix size 1024
-    mpi_implementations = ['MPI simple', 'MPI block all2all', 'MPI block point2point']  # Replace with actual names
-    plot_execution_time_comparison(df, matrix_size=1024, mpi_implementations=mpi_implementations)
-
     # Plot weak scaling for MPI implementation and base matrix size 1024
-    plot_weak_scaling(df, implementation='MPI simple', base_matrix_size=1024)
+    plot_weak_scaling(df, implementation='MPI simple', base_matrix_size=128)
 
 if __name__ == "__main__":
     main()

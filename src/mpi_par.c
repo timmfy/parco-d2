@@ -95,13 +95,13 @@ double* matTransposeMPI_block_point2point(int rank, int size, double* time, doub
         T = (double*) malloc(N * N * sizeof(double));
     }
 
-    if (rank == 0) {
-        start = MPI_Wtime();
-    }
 
     // Scatter the matrix
     MPI_Scatter(A, block_size * N, MPI_DOUBLE, local_block, block_size * N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
+    if (rank == 0) {
+        start = MPI_Wtime();
+    }
 
     //Transpose the local block
     for (int block_index = 0; block_index < N / block_size; block_index++) {
@@ -110,6 +110,10 @@ double* matTransposeMPI_block_point2point(int rank, int size, double* time, doub
                 inner_transpose[j * N + i + block_index * block_size] = local_block[i * N + j + block_index * block_size];
             }
         }
+    }
+
+    if (rank == 0) {
+        end = MPI_Wtime();
     }
 
     if (rank == 0) {
@@ -125,8 +129,8 @@ double* matTransposeMPI_block_point2point(int rank, int size, double* time, doub
             MPI_Send(inner_transpose + b * block_size, 1, block_type, 0, rank * size + b, MPI_COMM_WORLD);
         }
     }
+
     if (rank == 0) {
-        end = MPI_Wtime();
         *time = end - start; 
     }
     // Clean up
@@ -146,11 +150,15 @@ double* matTransposeMPI_block_all2all(int rank, double* time, double* A, int blo
 
     if (rank == 0) {
         T = (double*) malloc(N * N * sizeof(double));
-        start = MPI_Wtime();
     }
 
     // Scatter the matrix
     MPI_Scatter(A, block_size * N, MPI_DOUBLE, local_block, block_size * N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        start = MPI_Wtime();
+    }
+
     //Transpose the local block
     for (int block_index = 0; block_index < N / block_size; block_index++) {
         for (int i = 0; i < block_size; i++) {
@@ -158,6 +166,10 @@ double* matTransposeMPI_block_all2all(int rank, double* time, double* A, int blo
                 inner_transpose[j * N + i + block_index * block_size] = local_block[i * N + j + block_index * block_size];
             }
         }
+    }
+
+    if (rank == 0) {
+        end = MPI_Wtime();
     }
     // Define MPI datatype for blocks
     MPI_Datatype block_type, resized_block_type;
@@ -168,7 +180,6 @@ double* matTransposeMPI_block_all2all(int rank, double* time, double* A, int blo
     MPI_Alltoall(inner_transpose, 1, resized_block_type, outer_transpose, 1, resized_block_type, MPI_COMM_WORLD);
 
     if (rank == 0) {
-        end = MPI_Wtime();
         *time = end - start;
     }
     MPI_Gather(outer_transpose, block_size * N, MPI_DOUBLE, T, block_size * N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
