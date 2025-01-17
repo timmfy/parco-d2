@@ -31,4 +31,4 @@ echo "Running MPI Transpose with blocking algorithm with all to all communicatio
 
 echo "Running MPI checkSym"
 #Run MPI checkSym
-./run_benchmark.sh --processes-list 1,2,3,4,5,6 --size-list 5,6,7,8,9,10,11,12 -i MPI --checkSym --runs $numRuns >> /dev/null
+./run_benchmark.sh --processes-list 1,2,3,4,5,6 --size-list 5,6,7,8,9,10,11,12 -i MPI --checkSym 1 --runs $numRuns >> /dev/null

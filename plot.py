@@ -152,31 +152,7 @@ def plot_execution_time_variable_size(df, processes_list, implementation, min_si
     ax.set_title(f'Execution Time vs Matrix Size ({implementation} Implementation)')
     ax.legend(framealpha=1)
     plt.savefig(f'figures/execution_time_variable_size_{implementation}_{function}.png')
-
-def plot_execution_time_comparison_mpi(df, matrix_size, mpi_implementations):
-    """
-    Plots execution time for the same matrix size, comparing two MPI implementations with 
-    different algorithms. X axis has the number of processes.
-    """
-    fig, ax = plt.subplots()
-
-    for mpi_impl in mpi_implementations:
-        data = df[(df['Implementation'] == mpi_impl) &
-                  (df['Size'] == matrix_size) &
-                  (df['Function'] == 'transpose')]
-
-        ax.plot(data['Processes'], data['AvgTime'], label=mpi_impl)
-
-    ax.set_xscale('log')
-    ax.set_xticks([2**i for i in range(1, int(np.log2(data['Processes'].max())) + 1)], minor=False)
-    ax.tick_params(axis='x', which='minor', bottom=False)
-    ax.set_xlim([int(data['Processes'].min()), int(data['Processes'].max())])
-    ax.get_xaxis().set_major_formatter(plt.ScalarFormatter())
-    ax.set_xlabel('Processes')
-    ax.set_ylabel('Average Execution Time (s)')
-    ax.set_title(f'Execution Time Comparison of MPI Implementations, Matrix Size={matrix_size}')
-    ax.legend(framealpha=1)
-    plt.savefig(f'figures/execution_time_comparison_mpi_{matrix_size}.png')
+    plt.close()
 
 def plot_weak_scaling(df, implementation, base_matrix_size, function='transpose'):
     """

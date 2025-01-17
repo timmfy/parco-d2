@@ -13,7 +13,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # Compiler and flags
 CC := mpicc
-CFLAGS := -Wall -Wextra -DN=$(N) -fopenmp
+CFLAGS := -DN=$(N) -fopenmp
 
 # Headers
 HEADERS := $(wildcard $(INCLUDE_DIR)/*.h)
@@ -28,15 +28,7 @@ $(OBJ_DIR):
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-# Compile the mpi_par.c file
-$(OBJ_DIR)/mpi_par.o: $(SRC_DIR)/mpi_par.c $(HEADERS) | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@ #-O2 -ftree-vectorize -funroll-loops -fopt-info-optimized
-
-# Compile the omp_par.c file
-$(OBJ_DIR)/omp_par.o: $(SRC_DIR)/omp_par.c $(HEADERS) | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
-
-# Compile the rest of the files
+# Compile the files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
