@@ -1,0 +1,253 @@
+Implementation,Function,Size,Processes,AvgTime
+SEQ,transpose,32,1,0.000002253
+SEQ,transpose,64,1,0.000009517
+SEQ,transpose,128,1,0.000040468
+SEQ,transpose,256,1,0.000166352
+SEQ,transpose,512,1,0.001055678
+SEQ,transpose,1024,1,0.003858941
+SEQ,transpose,2048,1,0.058541203
+SEQ,transpose,4096,1,0.252640817
+OMP,transpose,32,2,0.000010
+OMP,transpose,32,4,0.000017
+OMP,transpose,32,8,0.000020
+OMP,transpose,32,16,0.000035
+OMP,transpose,32,32,0.000055
+OMP,transpose,32,64,0.000866
+OMP,transpose,64,2,0.000026
+OMP,transpose,64,4,0.000034
+OMP,transpose,64,8,0.000034
+OMP,transpose,64,16,0.000037
+OMP,transpose,64,32,0.000052
+OMP,transpose,64,64,0.000256
+OMP,transpose,128,2,0.000082
+OMP,transpose,128,4,0.000070
+OMP,transpose,128,8,0.000064
+OMP,transpose,128,16,0.000067
+OMP,transpose,128,32,0.000081
+OMP,transpose,128,64,0.000206
+OMP,transpose,256,2,0.000341
+OMP,transpose,256,4,0.000239
+OMP,transpose,256,8,0.000188
+OMP,transpose,256,16,0.000172
+OMP,transpose,256,32,0.000187
+OMP,transpose,256,64,0.000735
+OMP,transpose,512,2,0.001398
+OMP,transpose,512,4,0.000974
+OMP,transpose,512,8,0.000705
+OMP,transpose,512,16,0.000748
+OMP,transpose,512,32,0.000581
+OMP,transpose,512,64,0.000796
+OMP,transpose,1024,2,0.005798
+OMP,transpose,1024,4,0.003421
+OMP,transpose,1024,8,0.002192
+OMP,transpose,1024,16,0.001577
+OMP,transpose,1024,32,0.001342
+OMP,transpose,1024,64,0.003031
+OMP,transpose,2048,2,0.025730
+OMP,transpose,2048,4,0.014005
+OMP,transpose,2048,8,0.008248
+OMP,transpose,2048,16,0.006365
+OMP,transpose,2048,32,0.005144
+OMP,transpose,2048,64,0.005393
+OMP,transpose,4096,2,0.102881
+OMP,transpose,4096,4,0.053067
+OMP,transpose,4096,8,0.034815
+OMP,transpose,4096,16,0.022614
+OMP,transpose,4096,32,0.018149
+OMP,transpose,4096,64,0.017811
+MPI simple,transpose,32,2,0.000002379
+MPI simple,transpose,32,4,0.000002322
+MPI simple,transpose,32,8,0.000002332
+MPI simple,transpose,32,16,0.000002418
+MPI simple,transpose,32,32,0.000002780
+MPI simple,transpose,64,2,0.000005751
+MPI simple,transpose,64,4,0.000005994
+MPI simple,transpose,64,8,0.000005918
+MPI simple,transpose,64,16,0.000006204
+MPI simple,transpose,64,32,0.000006628
+MPI simple,transpose,64,64,0.000008116
+MPI simple,transpose,128,2,0.000016294
+MPI simple,transpose,128,4,0.000016227
+MPI simple,transpose,128,8,0.000017943
+MPI simple,transpose,128,16,0.000017910
+MPI simple,transpose,128,32,0.000018439
+MPI simple,transpose,128,64,0.000023661
+MPI simple,transpose,256,2,0.000065508
+MPI simple,transpose,256,4,0.000078044
+MPI simple,transpose,256,8,0.000069723
+MPI simple,transpose,256,16,0.000073128
+MPI simple,transpose,256,32,0.000074434
+MPI simple,transpose,256,64,0.000092363
+MPI simple,transpose,512,2,0.000853343
+MPI simple,transpose,512,4,0.000868263
+MPI simple,transpose,512,8,0.000885925
+MPI simple,transpose,512,16,0.000848022
+MPI simple,transpose,512,32,0.000947609
+MPI simple,transpose,512,64,0.001017652
+MPI simple,transpose,1024,2,0.003581934
+MPI simple,transpose,1024,4,0.004218583
+MPI simple,transpose,1024,8,0.003764510
+MPI simple,transpose,1024,16,0.003812218
+MPI simple,transpose,1024,32,0.004339004
+MPI simple,transpose,1024,64,0.005584288
+MPI simple,transpose,2048,2,0.052490764
+MPI simple,transpose,2048,4,0.054672723
+MPI simple,transpose,2048,8,0.056364527
+MPI simple,transpose,2048,16,0.053995957
+MPI simple,transpose,2048,32,0.062256665
+MPI simple,transpose,2048,64,0.065817599
+MPI simple,transpose,4096,2,0.371026597
+MPI simple,transpose,4096,4,0.370331588
+MPI simple,transpose,4096,8,0.379145155
+MPI simple,transpose,4096,16,0.368738885
+MPI simple,transpose,4096,32,0.377824955
+MPI simple,transpose,4096,64,0.388183746
+MPI block point2point,transpose,32,2,0.000001464
+MPI block point2point,transpose,32,4,0.000000854
+MPI block point2point,transpose,32,8,0.000000458
+MPI block point2point,transpose,32,16,0.000000386
+MPI block point2point,transpose,32,32,0.000000696
+MPI block point2point,transpose,64,2,0.000005665
+MPI block point2point,transpose,64,4,0.000002966
+MPI block point2point,transpose,64,8,0.000001512
+MPI block point2point,transpose,64,16,0.000000901
+MPI block point2point,transpose,64,32,0.000000648
+MPI block point2point,transpose,64,64,0.000000739
+MPI block point2point,transpose,128,2,0.000027680
+MPI block point2point,transpose,128,4,0.000011396
+MPI block point2point,transpose,128,8,0.000006223
+MPI block point2point,transpose,128,16,0.000003290
+MPI block point2point,transpose,128,32,0.000002112
+MPI block point2point,transpose,128,64,0.000001554
+MPI block point2point,transpose,256,2,0.000259247
+MPI block point2point,transpose,256,4,0.000118899
+MPI block point2point,transpose,256,8,0.000048013
+MPI block point2point,transpose,256,16,0.000011883
+MPI block point2point,transpose,256,32,0.000005774
+MPI block point2point,transpose,256,64,0.000004067
+MPI block point2point,transpose,512,2,0.001779323
+MPI block point2point,transpose,512,4,0.000548368
+MPI block point2point,transpose,512,8,0.000272985
+MPI block point2point,transpose,512,16,0.000137048
+MPI block point2point,transpose,512,32,0.000061803
+MPI block point2point,transpose,512,64,0.000017872
+MPI block point2point,transpose,1024,2,0.008921199
+MPI block point2point,transpose,1024,4,0.003408775
+MPI block point2point,transpose,1024,8,0.001284657
+MPI block point2point,transpose,1024,16,0.000655022
+MPI block point2point,transpose,1024,32,0.000276527
+MPI block point2point,transpose,1024,64,0.000163178
+MPI block point2point,transpose,2048,2,0.041279812
+MPI block point2point,transpose,2048,4,0.019724522
+MPI block point2point,transpose,2048,8,0.008109264
+MPI block point2point,transpose,2048,16,0.003385015
+MPI block point2point,transpose,2048,32,0.001753120
+MPI block point2point,transpose,2048,64,0.001029148
+MPI block point2point,transpose,4096,2,0.178280015
+MPI block point2point,transpose,4096,4,0.083545694
+MPI block point2point,transpose,4096,8,0.041446428
+MPI block point2point,transpose,4096,16,0.017961445
+MPI block point2point,transpose,4096,32,0.007422824
+MPI block point2point,transpose,4096,64,0.004748807
+MPI block all2all,transpose,32,2,0.000001249
+MPI block all2all,transpose,32,4,0.000000653
+MPI block all2all,transpose,32,8,0.000000362
+MPI block all2all,transpose,32,16,0.000000315
+MPI block all2all,transpose,32,32,0.000000763
+MPI block all2all,transpose,64,2,0.000004869
+MPI block all2all,transpose,64,4,0.000002427
+MPI block all2all,transpose,64,8,0.000001345
+MPI block all2all,transpose,64,16,0.000000763
+MPI block all2all,transpose,64,32,0.000000596
+MPI block all2all,transpose,64,64,0.000000634
+MPI block all2all,transpose,128,2,0.000036969
+MPI block all2all,transpose,128,4,0.000009656
+MPI block all2all,transpose,128,8,0.000005412
+MPI block all2all,transpose,128,16,0.000002742
+MPI block all2all,transpose,128,32,0.000002022
+MPI block all2all,transpose,128,64,0.000001297
+MPI block all2all,transpose,256,2,0.000202131
+MPI block all2all,transpose,256,4,0.000099678
+MPI block all2all,transpose,256,8,0.000048060
+MPI block all2all,transpose,256,16,0.000011611
+MPI block all2all,transpose,256,32,0.000005541
+MPI block all2all,transpose,256,64,0.000003829
+MPI block all2all,transpose,512,2,0.001497998
+MPI block all2all,transpose,512,4,0.000550017
+MPI block all2all,transpose,512,8,0.000271101
+MPI block all2all,transpose,512,16,0.000136681
+MPI block all2all,transpose,512,32,0.000061951
+MPI block all2all,transpose,512,64,0.000017252
+MPI block all2all,transpose,1024,2,0.008859849
+MPI block all2all,transpose,1024,4,0.003448400
+MPI block all2all,transpose,1024,8,0.001395106
+MPI block all2all,transpose,1024,16,0.001005745
+MPI block all2all,transpose,1024,32,0.000290189
+MPI block all2all,transpose,1024,64,0.000168357
+MPI block all2all,transpose,2048,2,0.046060724
+MPI block all2all,transpose,2048,4,0.021314864
+MPI block all2all,transpose,2048,8,0.009404664
+MPI block all2all,transpose,2048,16,0.003752680
+MPI block all2all,transpose,2048,32,0.001883907
+MPI block all2all,transpose,2048,64,0.000789461
+MPI block all2all,transpose,4096,2,0.176006207
+MPI block all2all,transpose,4096,4,0.083757291
+MPI block all2all,transpose,4096,8,0.044170136
+MPI block all2all,transpose,4096,16,0.019454999
+MPI block all2all,transpose,4096,32,0.007708564
+MPI block all2all,transpose,4096,64,0.004874101
+SEQ,checkSym,32,1,0.000000291
+SEQ,checkSym,64,1,0.000001181
+SEQ,checkSym,128,1,0.000004282
+SEQ,checkSym,256,1,0.000019137
+SEQ,checkSym,512,1,0.000115876
+SEQ,checkSym,1024,1,0.000439596
+SEQ,checkSym,2048,1,0.002449502
+SEQ,checkSym,4096,1,0.017887316
+MPI,checkSym,32,2,0.000016441
+MPI,checkSym,32,4,0.000017166
+MPI,checkSym,32,8,0.000035205
+MPI,checkSym,32,16,0.000039587
+MPI,checkSym,32,32,0.000026531
+MPI,checkSym,64,2,0.000036588
+MPI,checkSym,64,4,0.000043216
+MPI,checkSym,64,8,0.000030503
+MPI,checkSym,64,16,0.000040884
+MPI,checkSym,64,32,0.000043397
+MPI,checkSym,64,64,0.000056748
+MPI,checkSym,128,2,0.000139918
+MPI,checkSym,128,4,0.000082111
+MPI,checkSym,128,8,0.000085664
+MPI,checkSym,128,16,0.000090570
+MPI,checkSym,128,32,0.000094419
+MPI,checkSym,128,64,0.000107732
+MPI,checkSym,256,2,0.000427151
+MPI,checkSym,256,4,0.000288415
+MPI,checkSym,256,8,0.000258675
+MPI,checkSym,256,16,0.000273328
+MPI,checkSym,256,32,0.000278811
+MPI,checkSym,256,64,0.000292859
+MPI,checkSym,512,2,0.002557034
+MPI,checkSym,512,4,0.002132177
+MPI,checkSym,512,8,0.001582170
+MPI,checkSym,512,16,0.001752677
+MPI,checkSym,512,32,0.001546578
+MPI,checkSym,512,64,0.001591048
+MPI,checkSym,1024,2,0.009722586
+MPI,checkSym,1024,4,0.008783875
+MPI,checkSym,1024,8,0.007486706
+MPI,checkSym,1024,16,0.006951246
+MPI,checkSym,1024,32,0.006974182
+MPI,checkSym,1024,64,0.006331434
+MPI,checkSym,2048,2,0.040152078
+MPI,checkSym,2048,4,0.034773788
+MPI,checkSym,2048,8,0.038758702
+MPI,checkSym,2048,16,0.038795242
+MPI,checkSym,2048,32,0.034561734
+MPI,checkSym,2048,64,0.038204770
+MPI,checkSym,4096,2,0.277732315
+MPI,checkSym,4096,4,0.262763023
+MPI,checkSym,4096,8,0.256288290
+MPI,checkSym,4096,16,0.244264503
+MPI,checkSym,4096,32,0.259875050
+MPI,checkSym,4096,64,0.268302865
