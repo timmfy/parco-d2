@@ -136,5 +136,5 @@ Customization of the plots can be done by modifying the `main()` function in the
 - `plot_execution_time_variable_size(dataframe, processes_list, implementation, min_size, max_size, function)`: Plots the execution time for the specified implementation, various processes, various matrix sizes (from `min_size` to `max_size`) and function(`transpose` or `checkSym`)
 - `plot_weak_scaling(dataframe, implementation, base_matrix_size, function)`: Plots the weak scaling for the specified implementation, base matrix size (used to set the 1-process baseline) and a function
 - `plot_execution_time_fixed_size(dataframe, matrix_size, implementations, processes_list)`: Used only for the `transpose` benchmark in order to compare the execution times for different implementations and processes for a fixed matrix size.
-
+The plots require the `results.csv` file to be present in the project directory. Otherwise, the sample data `sample_data.csv` can be used.
 The plots will be saved in the `figures` directory. 
