@@ -12,6 +12,9 @@ The project implements parallel matrix transpose algorithms using MPI and compar
 
 ## Local Compiling/Executing Instructions
 Clone or download the repository and navigate to the project directory
+```sh
+git clone https://github.com/timmfy/parco-d2
+```
 ### Running using scripts
 The section below describes how to run the code using the .sh scripts either locally or on the cluster using the interactive session.
 Before running, make sure to enable the scripts using the following command
