@@ -124,7 +124,7 @@ If compiled the code with the Makefile, use `./bin/main` instead of `./main`
     ```sh
     qsub parco-d2.pbs
     ```
-    - The results will be stored in the `results.csv` file
+    - The results will be stored in the `results.csv` file (if running muliple benchmarks using a script)
     - Standard output and errors will be stored in the `parco-d2.out` and `parco-d2.err` files respectively
 ## (Optional) Plotting the results
 The results can be plotted using the provided Python script `plot.py`. It requires the `matplotlib`, `numpy` and `pandas` libraries to be installed. The script reads the `results.csv` file and plots the execution times and strong/weak scaling for the different benchmarks. The script can be run using the following command:
