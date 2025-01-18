@@ -96,7 +96,7 @@ If compiled manually:
 ```sh
 mpirun -np <numProcesses> ./main MPI <numRuns> <checkSym> <algorithm>
 ```
-where `<numProcesses>` is the number of processes to run the benchmark for, `<numRuns>` is the number of times to run the benchmark, `<checkSym>` specifies whether to run the matrix symmetry check function and `<algorithm>` specifies the MPI transpose implementation to run (specified above) (default is `0`).
+where `<numProcesses>` is the number of processes to run the benchmark for (should be a power of 2), `<numRuns>` is the number of times to run the benchmark, `<checkSym>` specifies whether to run the matrix symmetry check function and `<algorithm>` specifies the MPI transpose implementation to run (specified above) (default is `0`).
 If compiled the code with the Makefile, use `./bin/main` instead of `./main`
 ## Cluster Compilation and Running
 1. Using the interactive session:
